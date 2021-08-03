@@ -27,14 +27,35 @@ package com.hnkien;
 
 
 public class LeetCode122_BestTimeBuySellStock2 {
-    public static int maxProfit2(int[] prices) {
-        int max_profit = 0;
 
-        return max_profit;
+    public static int maxProfit(int[] prices) {
+        int maxprofit = 0;
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i] > prices[i - 1])
+                maxprofit += prices[i] - prices[i - 1];
+        }
+        return maxprofit;
     }
 
-//    Brute force solution:
-    public static int maxProfit(int[] prices) {
+    public static int maxProfit2(int[] prices) {
+        int i = 0;
+        int valley = prices[0];
+        int peak = prices[0];
+        int maxprofit = 0;
+        while (i < prices.length - 1) {
+            while (i < prices.length - 1 && prices[i] >= prices[i + 1])
+                i++;
+            valley = prices[i];
+            while (i < prices.length - 1 && prices[i] <= prices[i + 1])
+                i++;
+            peak = prices[i];
+            maxprofit += peak - valley;
+        }
+        return maxprofit;
+    }
+
+    //    Brute force solution:
+    public static int maxProfit3(int[] prices) {
         return calculate(prices, 0);
     }
 
@@ -58,9 +79,12 @@ public class LeetCode122_BestTimeBuySellStock2 {
     }
 
     public static void runTest() {
-        int[][] nums_array = {{7,1,5,3,6,4}, {1,2,3,4,5}, {7,6,4,3,1}};
-        for (int[] nums : nums_array)
-//            for (int num : nums) System.out.println(num);
+        int[][] nums_array = {{7, 1, 5, 3, 6, 4}, {1, 2, 3, 4, 5}, {7, 6, 4, 3, 1}, {7, 1, 2, 5, 6, 4}};
+        for (int[] nums : nums_array) {
             System.out.println(maxProfit(nums));
+            System.out.println(maxProfit2(nums));
+            System.out.println(maxProfit3(nums));
+        }
+
     }
 }
